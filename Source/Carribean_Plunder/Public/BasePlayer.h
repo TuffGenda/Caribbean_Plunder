@@ -3,17 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
-#include "BaseCharacter.generated.h"
+#include "BaseCharacter.h"
+#include "BasePlayer.generated.h"
 
 UCLASS()
-class CARRIBEAN_PLUNDER_API ABaseCharacter : public ACharacter
+class CARRIBEAN_PLUNDER_API ABasePlayer : public ABaseCharacter
 {
 	GENERATED_BODY()
-
+	
 public:
 	// Sets default values for this character's properties
-	ABaseCharacter();
+	ABasePlayer();
 
 protected:
 	// Called when the game starts or when spawned
@@ -22,5 +22,4 @@ protected:
 public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 };
