@@ -1,7 +1,7 @@
 ### Copyright Notice
 Copyright © 2026 Tuff Genda. All rights reserved.
 
-This source code and its associated assets are the intellectual property of [My Name/Company]. 
+This source code and its associated assets are the intellectual property of Tuff Genda. 
 Strictly no reproduction, modification, distribution, or commercial exploitation of this 
 software is permitted without explicit written authorization from the copyright holder.
 
