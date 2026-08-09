@@ -4,7 +4,7 @@ A new game project. It is a RTS, life sim, survival game set between 1650-1730 A
 ## Legal & Licensing
 
 ### Copyright Notice
-Copyright © [Year] [My name/Company]. All rights reserved.
+Copyright © 2026 Tuff Genda. All rights reserved.
 
 This source code and its associated assets are the intellectual property of [My Name/Company]. 
 Strictly no reproduction, modification, distribution, or commercial exploitation of this 
