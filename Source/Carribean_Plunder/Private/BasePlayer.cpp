@@ -4,6 +4,7 @@
 #include "BasePlayer.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 ABasePlayer::ABasePlayer()
@@ -11,6 +12,8 @@ ABasePlayer::ABasePlayer()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
+	// Set default movement speed
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 }
 
 // Called to bind functionality to input
@@ -30,6 +33,10 @@ void ABasePlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 		// Jumping
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+
+		// Sprinting
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &ABasePlayer::SprintEvent);
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ABasePlayer::StopSprintEvent);
 	}
 }
 
@@ -51,6 +58,7 @@ void ABasePlayer::BeginPlay()
 	}
 }
 
+// Movement event
 void ABasePlayer::MoveEvent(const FInputActionValue& Value)
 {
 	// Get FVector2D from input
@@ -74,6 +82,7 @@ void ABasePlayer::MoveEvent(const FInputActionValue& Value)
 	}
 }
 
+// Look event
 void ABasePlayer::LookEvent(const FInputActionValue& Value)
 {
 	// Get FVector2D from input
@@ -85,4 +94,16 @@ void ABasePlayer::LookEvent(const FInputActionValue& Value)
 		AddControllerYawInput(LookVector.X);
 		AddControllerPitchInput(LookVector.Y);
 	}
+}
+
+// Sprint events
+void ABasePlayer::SprintEvent(const FInputActionValue& Value)
+{
+	// Set sprinting movement speed
+	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+}
+void ABasePlayer::StopSprintEvent(const FInputActionValue& Value)
+{
+	// Restore walking movement speed
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 }

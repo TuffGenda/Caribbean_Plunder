@@ -39,9 +39,25 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
 	class UInputAction* JumpAction;
 
+	// Sprint input
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
+	class UInputAction* SprintAction;
+
+	// Default walking speed
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float WalkSpeed = 1000.f;
+
+	// Default sprinting speed
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float SprintSpeed = 1500.f;
+
 	// Movement event
 	void MoveEvent(const FInputActionValue& Value);
 
 	// Look event
 	void LookEvent(const FInputActionValue& Value);
+
+	// Sprint events
+	void SprintEvent(const FInputActionValue& Value);
+	void StopSprintEvent(const FInputActionValue& Value);
 };
