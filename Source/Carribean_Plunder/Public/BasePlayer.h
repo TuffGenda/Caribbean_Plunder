@@ -60,4 +60,5 @@ protected:
 	// Sprint events
 	void SprintEvent(const FInputActionValue& Value);
 	void StopSprintEvent(const FInputActionValue& Value);
+
 };

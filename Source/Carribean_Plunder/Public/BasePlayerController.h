@@ -31,6 +31,18 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
 	class UInputAction* InteractAction;
 
+	// Spectate input
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
+	class UInputAction* SpectateAction;
+
 	// Interact event
 	void InteractEvent(const FInputActionValue& Value);
+
+	// Interact event
+	void SpectateEvent(const FInputActionValue& Value);
+
+private:
+	// Reference to original player to keep upon changing to spectator mode
+	UPROPERTY()
+	ACharacter* PlayerRef;
 };
