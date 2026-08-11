@@ -30,9 +30,6 @@ void ABasePlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 		// Jumping
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
-
-		// Interaction
-		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ABasePlayer::InteractEvent);
 	}
 }
 
@@ -46,9 +43,9 @@ void ABasePlayer::BeginPlay()
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
-			if (DefaultMappingContext)
+			if (CharacterMovementContext)
 			{
-				Subsystem->AddMappingContext(DefaultMappingContext, 0);
+				Subsystem->AddMappingContext(CharacterMovementContext, 0);
 			}
 		}
 	}
@@ -88,9 +85,4 @@ void ABasePlayer::LookEvent(const FInputActionValue& Value)
 		AddControllerYawInput(LookVector.X);
 		AddControllerPitchInput(LookVector.Y);
 	}
-}
-
-void ABasePlayer::InteractEvent(const FInputActionValue& Value)
-{
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Interaction Action Pressed!"));
 }
