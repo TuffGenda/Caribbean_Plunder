@@ -4,6 +4,7 @@
 #include "BasePlayer.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 ABasePlayer::ABasePlayer()
@@ -11,6 +12,8 @@ ABasePlayer::ABasePlayer()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
+	// Set default movement speed
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 }
 
 // Called to bind functionality to input
@@ -31,8 +34,9 @@ void ABasePlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
-		// Interaction
-		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ABasePlayer::InteractEvent);
+		// Sprinting
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &ABasePlayer::SprintEvent);
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ABasePlayer::StopSprintEvent);
 	}
 }
 
@@ -46,14 +50,15 @@ void ABasePlayer::BeginPlay()
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
-			if (DefaultMappingContext)
+			if (CharacterMovementContext)
 			{
-				Subsystem->AddMappingContext(DefaultMappingContext, 0);
+				Subsystem->AddMappingContext(CharacterMovementContext, 0);
 			}
 		}
 	}
 }
 
+// Movement event
 void ABasePlayer::MoveEvent(const FInputActionValue& Value)
 {
 	// Get FVector2D from input
@@ -77,6 +82,7 @@ void ABasePlayer::MoveEvent(const FInputActionValue& Value)
 	}
 }
 
+// Look event
 void ABasePlayer::LookEvent(const FInputActionValue& Value)
 {
 	// Get FVector2D from input
@@ -90,7 +96,14 @@ void ABasePlayer::LookEvent(const FInputActionValue& Value)
 	}
 }
 
-void ABasePlayer::InteractEvent(const FInputActionValue& Value)
+// Sprint events
+void ABasePlayer::SprintEvent(const FInputActionValue& Value)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Interaction Action Pressed!"));
+	// Set sprinting movement speed
+	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+}
+void ABasePlayer::StopSprintEvent(const FInputActionValue& Value)
+{
+	// Restore walking movement speed
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 }

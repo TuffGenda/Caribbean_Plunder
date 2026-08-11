@@ -24,24 +24,32 @@ protected:
 	virtual void BeginPlay() override;
 
 	// Mapping context
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	class UInputMappingContext* DefaultMappingContext;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
+	class UInputMappingContext* CharacterMovementContext;
 
 	// Movement input
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
 	class UInputAction* MoveAction;
 
 	// Look input
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
 	class UInputAction* LookAction;
 
 	// Jump input
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
 	class UInputAction* JumpAction;
 
-	// Interact input
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	class UInputAction* InteractAction;
+	// Sprint input
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
+	class UInputAction* SprintAction;
+
+	// Default walking speed
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float WalkSpeed = 1000.f;
+
+	// Default sprinting speed
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float SprintSpeed = 1500.f;
 
 	// Movement event
 	void MoveEvent(const FInputActionValue& Value);
@@ -49,6 +57,8 @@ protected:
 	// Look event
 	void LookEvent(const FInputActionValue& Value);
 
-	// Interact event
-	void InteractEvent(const FInputActionValue& Value);
+	// Sprint events
+	void SprintEvent(const FInputActionValue& Value);
+	void StopSprintEvent(const FInputActionValue& Value);
+
 };
