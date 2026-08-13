@@ -4,6 +4,7 @@
 #include "BasePlayer.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "StaminaComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
@@ -31,7 +32,7 @@ void ABasePlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABasePlayer::LookEvent);
 
 		// Jumping
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ABasePlayer::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
 		// Sprinting
@@ -56,6 +57,22 @@ void ABasePlayer::BeginPlay()
 			}
 		}
 	}
+
+
+	if (StaminaComp)
+	{
+		StaminaComp->OnStaminaChanged.AddDynamic(this, &ABasePlayer::StaminaChange);
+	}
+}
+
+void ABasePlayer::Jump()
+{
+	if (StaminaComp && StaminaComp->UseStamina(JumpCost))
+	{
+		Super::Jump();
+
+		StaminaComp->RegenStaminaMult = 1.f;
+	}
 }
 
 // Movement event
@@ -79,6 +96,8 @@ void ABasePlayer::MoveEvent(const FInputActionValue& Value)
 		// Add movement
 		AddMovementInput(ForwardDirection, MovementVector.Y);
 		AddMovementInput(RightDirection, MovementVector.X);
+
+		StaminaComp->RegenStaminaMult = 1.f;
 	}
 }
 
@@ -99,11 +118,31 @@ void ABasePlayer::LookEvent(const FInputActionValue& Value)
 // Sprint events
 void ABasePlayer::SprintEvent(const FInputActionValue& Value)
 {
-	// Set sprinting movement speed
-	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+	if (StaminaComp && StaminaComp->UseStamina(SprintCost))
+	{
+		// Set sprinting movement speed
+		GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+
+		StaminaComp->RegenStamina = true;
+		StaminaComp->RegenStaminaMult = 1.f;
+	}
+	else
+	{
+		StopSprintEvent(Value);
+	}
 }
 void ABasePlayer::StopSprintEvent(const FInputActionValue& Value)
 {
 	// Restore walking movement speed
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+
+	if (StaminaComp)
+	{
+		StaminaComp->RegenStamina = true;
+	}
+}
+
+void ABasePlayer::StaminaChange(float CurrentStamina, float MaxStamina)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Character used Stamina! Current Stamina: %f / %f"), CurrentStamina, MaxStamina);
 }

@@ -23,6 +23,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	// Overridden jump function for use with stamina
+	virtual void Jump() override;
+
 	// Mapping context
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
 	class UInputMappingContext* CharacterMovementContext;
@@ -51,6 +54,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float SprintSpeed = 1500.f;
 
+	// Default sprinting cost
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float SprintCost = 1.f;
+
+	// Default jumping cost
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float JumpCost = 10.f;
+
 	// Movement event
 	void MoveEvent(const FInputActionValue& Value);
 
@@ -60,5 +71,9 @@ protected:
 	// Sprint events
 	void SprintEvent(const FInputActionValue& Value);
 	void StopSprintEvent(const FInputActionValue& Value);
+
+	// Stamina change event
+	UFUNCTION(BlueprintCallable, Category = "Movement")
+	void StaminaChange(float CurrentStamina, float MaxStamina);
 
 };
