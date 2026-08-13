@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/ProgressBar.h"
 #include "PlayerHUD.generated.h"
 
 /**
@@ -14,4 +15,10 @@ class CARRIBEAN_PLUNDER_API UPlayerHUD : public UUserWidget
 {
 	GENERATED_BODY()
 	
+public:
+	UPROPERTY(meta = (BindWidget))
+	UProgressBar* StaminaBar;
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void UpdateStamina(float CurrentStamina, float MaxStamina);
 };

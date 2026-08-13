@@ -5,6 +5,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "StaminaComponent.h"
+#include "PlayerHUD.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
@@ -58,10 +59,15 @@ void ABasePlayer::BeginPlay()
 		}
 	}
 
-
-	if (StaminaComp)
+	if (PlayerHUD)
 	{
-		StaminaComp->OnStaminaChanged.AddDynamic(this, &ABasePlayer::StaminaChange);
+		PlayerHUD->AddToViewport();
+
+		if (StaminaComp)
+		{
+			StaminaComp->OnStaminaChanged.AddDynamic(PlayerHUD, &UPlayerHUD::UpdateStamina);
+			PlayerHUD->UpdateStamina(100.f, 100.f);
+		}
 	}
 }
 
@@ -140,9 +146,4 @@ void ABasePlayer::StopSprintEvent(const FInputActionValue& Value)
 	{
 		StaminaComp->RegenStamina = true;
 	}
-}
-
-void ABasePlayer::StaminaChange(float CurrentStamina, float MaxStamina)
-{
-	UE_LOG(LogTemp, Warning, TEXT("Character used Stamina! Current Stamina: %f / %f"), CurrentStamina, MaxStamina);
 }

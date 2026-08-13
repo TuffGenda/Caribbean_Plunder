@@ -62,6 +62,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float JumpCost = 10.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	class UPlayerHUD* PlayerHUD;
+
 	// Movement event
 	void MoveEvent(const FInputActionValue& Value);
 
@@ -71,9 +74,5 @@ protected:
 	// Sprint events
 	void SprintEvent(const FInputActionValue& Value);
 	void StopSprintEvent(const FInputActionValue& Value);
-
-	// Stamina change event
-	UFUNCTION(BlueprintCallable, Category = "Movement")
-	void StaminaChange(float CurrentStamina, float MaxStamina);
 
 };
