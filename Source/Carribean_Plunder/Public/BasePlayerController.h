@@ -44,5 +44,8 @@ protected:
 private:
 	// Reference to original player to keep upon changing to spectator mode
 	UPROPERTY()
-	ACharacter* PlayerRef;
+	class ABasePlayer* PlayerRef;
+
+	UPROPERTY()
+	class UPlayerHUD* PlayerHUDRef;
 };

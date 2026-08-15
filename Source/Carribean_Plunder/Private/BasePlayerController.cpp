@@ -5,7 +5,8 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "GameFramework/SpectatorPawn.h"
-#include "GameFramework/Character.h"
+#include "BasePlayer.h"
+#include "PlayerHUD.h"
 
 // Called to bind functionality to input
 void ABasePlayerController::SetupInputComponent()
@@ -55,18 +56,26 @@ void ABasePlayerController::SpectateEvent(const FInputActionValue& Value)
     {
         ACharacter* PlayerChar = GetCharacter();
         if (PlayerChar)
-        {
-            PlayerRef = PlayerChar;
+		{
+            PlayerRef = Cast<ABasePlayer>(PlayerChar);
+			PlayerHUDRef = PlayerRef->PlayerHUD;
 
-			ChangeState(NAME_Spectating);
+			PlayerRef->PlayerHUD->RemoveFromParent();
+
+			if (PlayerRef && PlayerHUDRef)
+			{
+				ChangeState(NAME_Spectating);
+			}
         }
     }
     else
     {
 		ChangeState(NAME_Playing);
 
-        if (PlayerRef)
+        if (PlayerRef && PlayerHUDRef)
         {
+			PlayerHUDRef->AddToViewport();
+
             Possess(PlayerRef);
         }
 

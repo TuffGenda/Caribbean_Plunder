@@ -19,6 +19,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	class UPlayerHUD* PlayerHUD;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -61,9 +64,6 @@ protected:
 	// Default jumping cost
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float JumpCost = 10.f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
-	class UPlayerHUD* PlayerHUD;
 
 	// Movement event
 	void MoveEvent(const FInputActionValue& Value);
