@@ -3,6 +3,8 @@
 
 #include "BaseCharacter.h"
 #include "StaminaComponent.h"
+#include "ThirstComponent.h"
+#include "HungerComponent.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -11,6 +13,8 @@ ABaseCharacter::ABaseCharacter()
 	PrimaryActorTick.bCanEverTick = false;
 
 	StaminaComp = CreateDefaultSubobject<UStaminaComponent>(TEXT("StaminaComp"));
+	ThirstComp = CreateDefaultSubobject<UThirstComponent>(TEXT("ThirstComp"));
+	HungerComp = CreateDefaultSubobject<UHungerComponent>(TEXT("HungerComp"));
 }
 
 // Called to bind functionality to input

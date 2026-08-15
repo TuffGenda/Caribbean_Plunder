@@ -12,6 +12,20 @@ UStaminaComponent::UStaminaComponent()
 
 }
 
+// Called every frame
+void UStaminaComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	if (CurrentStamina < MaxStamina && RegenStamina)
+	{
+		CurrentStamina = FMath::Clamp(CurrentStamina + (RegenRate * RegenStaminaMult * DeltaTime), 0.f, MaxStamina);
+		OnStaminaChanged.Broadcast(CurrentStamina, MaxStamina);
+	}
+
+	RegenStaminaMult = 2.f;
+}
+
 // Function for using stamina that broadcasts the delegate
 bool UStaminaComponent::UseStamina(float Amount)
 {
@@ -28,11 +42,6 @@ bool UStaminaComponent::UseStamina(float Amount)
 	CurrentStamina -= Amount;
 	OnStaminaChanged.Broadcast(CurrentStamina, MaxStamina);
 
-	if (CurrentStamina <= 0.0f)
-	{
-		return false;
-	}
-
 	return true;
 }
 
@@ -44,19 +53,3 @@ void UStaminaComponent::BeginPlay()
 	CurrentStamina = MaxStamina;
 
 }
-
-
-// Called every frame
-void UStaminaComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	if (CurrentStamina < MaxStamina && RegenStamina)
-	{
-		CurrentStamina = FMath::Clamp(CurrentStamina + (RegenRate * RegenStaminaMult * DeltaTime), 0.0f, MaxStamina);
-		OnStaminaChanged.Broadcast(CurrentStamina, MaxStamina);
-	}
-
-	RegenStaminaMult = 2.f;
-}
-

@@ -5,6 +5,8 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "StaminaComponent.h"
+#include "ThirstComponent.h"
+#include "HungerComponent.h"
 #include "PlayerHUD.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -67,6 +69,24 @@ void ABasePlayer::BeginPlay()
 		{
 			StaminaComp->OnStaminaChanged.AddDynamic(PlayerHUD, &UPlayerHUD::UpdateStamina);
 			PlayerHUD->UpdateStamina(100.f, 100.f);
+		}
+
+		/*if (HealthComp)
+		{
+			HealthComp->OnHealthChanged.AddDynamic(PlayerHUD, &UPlayerHUD::UpdateHealth);
+			PlayerHUD->UpdateHealth(100.f, 100.f);
+		}*/
+
+		if (ThirstComp)
+		{
+			ThirstComp->OnThirstChanged.AddDynamic(PlayerHUD, &UPlayerHUD::UpdateThirst);
+			PlayerHUD->UpdateThirst(100.f, 100.f);
+		}
+
+		if (HungerComp)
+		{
+			HungerComp->OnHungerChanged.AddDynamic(PlayerHUD, &UPlayerHUD::UpdateHunger);
+			PlayerHUD->UpdateHunger(100.f, 100.f);
 		}
 	}
 }

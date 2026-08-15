@@ -21,7 +21,7 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	// Delegate for everythime stamina gets drained
+	// Delegate for everytime stamina gets drained
 	UPROPERTY(BlueprintAssignable, Category = "Stamina")
 	FOnStaminaChanged OnStaminaChanged;
 
@@ -45,7 +45,7 @@ protected:
 
 	// The regen rate for recovering stamina
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stamina")
-	float RegenRate = 25.0f;
+	float RegenRate = 25.f;
 
 	// The current stamina the actor has
 	float CurrentStamina;

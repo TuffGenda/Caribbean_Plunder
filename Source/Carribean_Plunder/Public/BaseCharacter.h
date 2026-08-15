@@ -25,4 +25,16 @@ protected:
 	// Stamina component for using stamina
 	UPROPERTY(BlueprintReadOnly, Category = "Components")
 	class UStaminaComponent* StaminaComp;
+
+	// Health component for using health
+	//UPROPERTY(BlueprintReadOnly, Category = "Components")
+	//class UHealthComponent* HealthComp;
+
+	// Thirst component for using thirst
+	UPROPERTY(BlueprintReadOnly, Category = "Components")
+	class UThirstComponent* ThirstComp;
+
+	// Hunger component for using hunger
+	UPROPERTY(BlueprintReadOnly, Category = "Components")
+	class UHungerComponent* HungerComp;
 };
