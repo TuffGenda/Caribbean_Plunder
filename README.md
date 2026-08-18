@@ -1,5 +1,5 @@
 # Caribbean Plunder
-A new game project. It is a RTS, life sim, survival game set between 1650-1730 AD.
+A new game project. It is a life sim, survival, real time strategy (RTS) game set between 1650-1730 AD during the Golden Age of Piracy.
 
 ## Legal & Licensing
 
