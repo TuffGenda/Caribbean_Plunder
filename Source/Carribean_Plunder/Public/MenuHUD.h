@@ -21,6 +21,12 @@ public:
     class UButton* PlayButton;
 
     UPROPERTY(meta = (BindWidget))
+    class UButton* SettingsButton;
+
+    UPROPERTY(meta = (BindWidget))
+    class UButton* SettingsBackButton;
+
+    UPROPERTY(meta = (BindWidget))
     class UButton* CreditsButton;
 
     UPROPERTY(meta = (BindWidget))
@@ -40,12 +46,15 @@ private:
     void OnPlayClicked();
 
     UFUNCTION()
+    void OnSettingsClicked();
+
+    UFUNCTION()
     void OnCreditsClicked();
 
     UFUNCTION()
-    void OnCreditsBackClicked();
+    void OnBackClicked();
 
     UFUNCTION()
     void OnQuitClicked();
-	
+
 };

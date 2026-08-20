@@ -16,6 +16,16 @@ void UMenuHUD::NativeConstruct()
 		PlayButton->OnClicked.AddDynamic(this, &UMenuHUD::OnPlayClicked);
 	}
 
+    if (SettingsButton)
+    {
+        SettingsButton->OnClicked.AddDynamic(this, &UMenuHUD::OnSettingsClicked);
+    }
+
+    if (SettingsBackButton)
+    {
+        SettingsBackButton->OnClicked.AddDynamic(this, &UMenuHUD::OnBackClicked);
+    }
+
 	if (CreditsButton)
 	{
 		CreditsButton->OnClicked.AddDynamic(this, &UMenuHUD::OnCreditsClicked);
@@ -23,7 +33,7 @@ void UMenuHUD::NativeConstruct()
 
     if (CreditsBackButton)
     {
-        CreditsBackButton->OnClicked.AddDynamic(this, &UMenuHUD::OnCreditsBackClicked);
+        CreditsBackButton->OnClicked.AddDynamic(this, &UMenuHUD::OnBackClicked);
     }
 
 	if (QuitButton)
@@ -52,7 +62,7 @@ void UMenuHUD::OnPlayClicked()
     }
 }
 
-void UMenuHUD::OnCreditsClicked()
+void UMenuHUD::OnSettingsClicked()
 {
     if (MenuWidgetSwitcher)
     {
@@ -60,7 +70,15 @@ void UMenuHUD::OnCreditsClicked()
     }
 }
 
-void UMenuHUD::OnCreditsBackClicked()
+void UMenuHUD::OnCreditsClicked()
+{
+    if (MenuWidgetSwitcher)
+    {
+        MenuWidgetSwitcher->SetActiveWidgetIndex(2);
+    }
+}
+
+void UMenuHUD::OnBackClicked()
 {
     if (MenuWidgetSwitcher)
     {
