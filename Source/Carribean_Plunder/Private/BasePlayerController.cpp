@@ -7,6 +7,8 @@
 #include "GameFramework/SpectatorPawn.h"
 #include "BasePlayer.h"
 #include "PlayerHUD.h"
+#include "Blueprint/UserWidget.h"
+#include "Kismet/GameplayStatics.h"
 
 // Called to bind functionality to input
 void ABasePlayerController::SetupInputComponent()
@@ -21,6 +23,52 @@ void ABasePlayerController::SetupInputComponent()
 
 		// Spectate
 		EnhancedInputComponent->BindAction(SpectateAction, ETriggerEvent::Started, this, &ABasePlayerController::SpectateEvent);
+
+		// Pause
+		EnhancedInputComponent->BindAction(PauseAction, ETriggerEvent::Started, this, &ABasePlayerController::PauseEvent);
+	}
+}
+
+void ABasePlayerController::PauseResume()
+{
+	if (Paused)
+	{
+		bShowMouseCursor = false;
+		bEnableClickEvents = false;
+		bEnableMouseOverEvents = false;
+
+		SetInputMode(FInputModeGameOnly());
+
+		UGameplayStatics::SetGamePaused(GetWorld(), false);
+
+		PauseWidgetInstance->RemoveFromParent();
+		PauseWidgetInstance = nullptr;
+
+		Paused = false;
+	}
+	else
+	{
+		bShowMouseCursor = true;
+		bEnableClickEvents = true;
+		bEnableMouseOverEvents = true;
+
+		FInputModeGameAndUI InputModeData;
+		InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+
+		SetInputMode(InputModeData);
+
+		UGameplayStatics::SetGamePaused(GetWorld(), true);
+
+		if (PauseWidgetClass)
+		{
+			PauseWidgetInstance = CreateWidget<UUserWidget>(this, PauseWidgetClass);
+			if (PauseWidgetInstance)
+			{
+				PauseWidgetInstance->AddToViewport();
+
+				Paused = true;
+			}
+		}
 	}
 }
 
@@ -82,4 +130,10 @@ void ABasePlayerController::SpectateEvent(const FInputActionValue& Value)
         SetSpectatorPawn(nullptr);
 		Spectator->Destroy();
     }
+}
+
+// Pause event
+void ABasePlayerController::PauseEvent(const FInputActionValue& Value)
+{
+	PauseResume();
 }

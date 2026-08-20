@@ -19,6 +19,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupInputComponent() override;
 
+	void PauseResume();
+
+	bool Paused = false;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -35,11 +39,24 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
 	class UInputAction* SpectateAction;
 
+	// Pause input
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
+	class UInputAction* PauseAction;
+
 	// Interact event
 	void InteractEvent(const FInputActionValue& Value);
 
-	// Interact event
+	// Spectate event
 	void SpectateEvent(const FInputActionValue& Value);
+
+	// Pause event
+	void PauseEvent(const FInputActionValue& Value);
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI")
+	TSubclassOf<class UUserWidget> PauseWidgetClass;
+
+	UPROPERTY()
+	UUserWidget* PauseWidgetInstance;
 
 private:
 	// Reference to original player to keep upon changing to spectator mode
@@ -48,4 +65,5 @@ private:
 
 	UPROPERTY()
 	class UPlayerHUD* PlayerHUDRef;
+
 };
